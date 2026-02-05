@@ -1,0 +1,120 @@
+# ==============================================
+# Todo AI Chatbot - Helm Values
+# Default configuration for local Kubernetes deployment
+# ==============================================
+
+# ---------------------------------------------
+# Frontend Configuration
+# ---------------------------------------------
+frontend:
+  replicaCount: 1
+
+  image:
+    repository: todo-frontend
+    tag: local
+    pullPolicy: Never  # Local build, no pull needed
+
+  service:
+    type: NodePort
+    port: 3000
+    targetPort: 3000
+    nodePort: 30080
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  healthCheck:
+    enabled: true
+    type: tcp
+    port: 3000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+
+  env:
+    - name: NODE_ENV
+      value: production
+
+# ---------------------------------------------
+# Backend Configuration
+# ---------------------------------------------
+backend:
+  replicaCount: 1
+
+  image:
+    repository: todo-backend
+    tag: local
+    pullPolicy: Never  # Local build, no pull needed
+
+  service:
+    type: ClusterIP
+    port: 8000
+    targetPort: 8000
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  healthCheck:
+    enabled: true
+    type: http
+    path: /health
+    port: 8000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+
+  env:
+    - name: PYTHONUNBUFFERED
+      value: "1"
+
+# ---------------------------------------------
+# Secrets Configuration
+# ---------------------------------------------
+secrets:
+  create: true
+  name: todo-secrets
+  # Values MUST be provided via values-local.yaml or --set
+  databaseUrl: ""
+  openaiApiKey: ""
+  betterAuthSecret: ""
+
+# ---------------------------------------------
+# ConfigMap Configuration
+# ---------------------------------------------
+config:
+  create: true
+  name: todo-config
+  frontendUrl: "http://localhost:30080"
+  backendUrl: "http://todo-backend:8000"
+  apiUrl: "http://todo-backend:8000"
+
+# ---------------------------------------------
+# Common Labels
+# ---------------------------------------------
+commonLabels:
+  app.kubernetes.io/name: todo-chatbot
+  app.kubernetes.io/instance: todo-chatbot
+  app.kubernetes.io/version: "1.0.0"
+  app.kubernetes.io/managed-by: Helm
+
+# ---------------------------------------------
+# Pod Security Context
+# ---------------------------------------------
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+
+# ---------------------------------------------
+# Node Selection (empty for local dev)
+# ---------------------------------------------
+affinity: {}
+tolerations: []
+nodeSelector: {}

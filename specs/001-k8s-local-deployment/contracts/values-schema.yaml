@@ -1,0 +1,134 @@
+# Helm Values Schema for todo-chatbot Chart
+# This defines the structure and defaults for values.yaml
+
+# Chart metadata
+chart:
+  name: todo-chatbot
+  version: "0.1.0"
+  appVersion: "1.0.0"
+  description: "Todo AI Chatbot - Phase 4 Local Kubernetes Deployment"
+
+# Frontend configuration
+frontend:
+  # Replica count (1 for local development)
+  replicaCount: 1
+
+  # Container image settings
+  image:
+    repository: todo-frontend
+    tag: local
+    pullPolicy: Never  # Local build, no pull needed
+
+  # Service configuration
+  service:
+    type: NodePort
+    port: 3000
+    targetPort: 3000
+    nodePort: 30080  # External access port
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  # Health check configuration
+  healthCheck:
+    enabled: true
+    type: tcp  # TCP probe for Next.js
+    port: 3000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+
+  # Environment variables (non-sensitive)
+  env:
+    - name: NODE_ENV
+      value: production
+
+# Backend configuration
+backend:
+  # Replica count (1 for local development)
+  replicaCount: 1
+
+  # Container image settings
+  image:
+    repository: todo-backend
+    tag: local
+    pullPolicy: Never  # Local build, no pull needed
+
+  # Service configuration
+  service:
+    type: ClusterIP  # Internal only
+    port: 8000
+    targetPort: 8000
+
+  # Resource limits
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  # Health check configuration
+  healthCheck:
+    enabled: true
+    type: http
+    path: /health
+    port: 8000
+    initialDelaySeconds: 10
+    periodSeconds: 10
+
+  # Environment variables (non-sensitive)
+  env:
+    - name: PYTHONUNBUFFERED
+      value: "1"
+
+# Secrets configuration (values provided at install time)
+secrets:
+  # Create secret resource
+  create: true
+  name: todo-secrets
+
+  # Secret values (MUST be provided, no defaults)
+  # These should be set via:
+  #   --set secrets.databaseUrl="..."
+  #   or -f values-local.yaml (gitignored)
+  databaseUrl: ""       # Required: postgresql://user:pass@host/db
+  openaiApiKey: ""      # Required: sk-...
+  betterAuthSecret: ""  # Required: random string for JWT signing
+
+# ConfigMap configuration
+config:
+  # Create configmap resource
+  create: true
+  name: todo-config
+
+  # Configuration values
+  frontendUrl: "http://localhost:30080"
+  backendUrl: "http://todo-backend:8000"
+
+  # API URL exposed to frontend (used in NEXT_PUBLIC_API_URL)
+  # For Kubernetes, frontend calls backend via service name
+  apiUrl: "http://todo-backend:8000"
+
+# Common labels applied to all resources
+commonLabels:
+  app.kubernetes.io/name: todo-chatbot
+  app.kubernetes.io/instance: todo-chatbot
+  app.kubernetes.io/version: "1.0.0"
+  app.kubernetes.io/managed-by: Helm
+
+# Pod-level settings
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+
+# Affinity and tolerations (empty for local dev)
+affinity: {}
+tolerations: []
+nodeSelector: {}
