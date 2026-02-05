@@ -1,0 +1,62 @@
+# ==============================================
+# Todo AI Chatbot - Docker Compose
+# Local development and testing configuration
+# ==============================================
+
+services:
+  # -------------------------------------------
+  # Frontend Service (Next.js)
+  # -------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: todo-frontend:local
+    container_name: todo-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - todo-network
+    restart: unless-stopped
+
+  # -------------------------------------------
+  # Backend Service (FastAPI)
+  # -------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: todo-backend:local
+    container_name: todo-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DATABASE_URL=${DATABASE_URL}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - FRONTEND_URL=http://localhost:3000
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx; httpx.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - todo-network
+    restart: unless-stopped
+
+# -------------------------------------------
+# Networks
+# -------------------------------------------
+networks:
+  todo-network:
+    driver: bridge
