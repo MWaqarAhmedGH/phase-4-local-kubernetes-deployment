@@ -7,7 +7,7 @@ Deploy the Todo AI Chatbot (from Phase 3) to a local Kubernetes cluster using Do
 ## Phase IV Submission Details
 
 - **Phase IV: GitHub URL for Project Code:** [https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment](https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment)
-- **Pull Request:** [https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment/pull/1](https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment/pull/1)
+- **Pull Request:** [#1](https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment/pull/1)
 - **Phase IV: YouTube Demo Video:** [https://youtu.be/L6XeCHl1NK8](https://youtu.be/L6XeCHl1NK8)
 
 ---
