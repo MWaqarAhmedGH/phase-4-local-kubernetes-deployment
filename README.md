@@ -2,6 +2,28 @@
 
 Deploy the Todo AI Chatbot (from Phase 3) to a local Kubernetes cluster using Docker containers, Minikube, and Helm charts.
 
+---
+
+## Phase IV Submission Details
+
+| Detail | Link |
+|--------|------|
+| **GitHub URL (Project Code)** | https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment |
+| **Pull Request** | https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment/pull/1 |
+| **YouTube Demo Video** | https://youtu.be/L6XeCHl1NK8 |
+
+---
+
+## Run Following Commands Before Running App
+
+| Check | Command |
+|-------|---------|
+| Minikube running? | `minikube status` |
+| Pods running? | `kubectl get pods` |
+| App accessible? | `minikube service todo-frontend` |
+
+---
+
 ## Project Overview
 
 This phase focuses on containerizing and deploying the Phase 3 AI-powered Todo Chatbot to Kubernetes:
