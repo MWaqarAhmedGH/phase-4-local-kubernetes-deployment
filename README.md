@@ -6,21 +6,24 @@ Deploy the Todo AI Chatbot (from Phase 3) to a local Kubernetes cluster using Do
 
 ## Phase IV Submission Details
 
-| Detail | Link |
-|--------|------|
-| **GitHub URL (Project Code)** | https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment |
-| **Pull Request** | https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment/pull/1 |
-| **YouTube Demo Video** | https://youtu.be/L6XeCHl1NK8 |
+- **Phase IV: GitHub URL for Project Code:** [https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment](https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment)
+- **Pull Request:** [https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment/pull/1](https://github.com/MWaqarAhmedGH/phase-4-local-kubernetes-deployment/pull/1)
+- **Phase IV: YouTube Demo Video:** [https://youtu.be/L6XeCHl1NK8](https://youtu.be/L6XeCHl1NK8)
 
 ---
 
 ## Run Following Commands Before Running App
 
-| Check | Command |
-|-------|---------|
-| Minikube running? | `minikube status` |
-| Pods running? | `kubectl get pods` |
-| App accessible? | `minikube service todo-frontend` |
+```powershell
+# Check if Minikube is running
+minikube status
+
+# Check if Pods are running
+kubectl get pods
+
+# Open the App in browser
+minikube service todo-frontend
+```
 
 ---
 
