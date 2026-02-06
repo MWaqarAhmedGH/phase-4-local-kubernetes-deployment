@@ -14,7 +14,13 @@ Deploy the Todo AI Chatbot (from Phase 3) to a local Kubernetes cluster using Do
 
 ## Run Following Commands Before Running App
 
+1. Open Docker Desktop
+2. Open PowerShell and run:
+
 ```powershell
+# Start Minikube
+minikube start --driver=docker
+
 # Check if Minikube is running
 minikube status
 
